@@ -32,4 +32,8 @@ public class ParkingLot {
         cars.remove(ticket);
         return car;
     }
+
+    public Integer getAvailableSpaces() {
+        return size - cars.size();
+    }
 }
