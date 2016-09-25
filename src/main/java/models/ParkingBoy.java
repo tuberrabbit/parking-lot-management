@@ -2,34 +2,26 @@ package models;
 
 import exceptions.NoAvailableParkingSpace;
 import exceptions.NoSuchCarInParkingLot;
+import strategies.IdealParkingLotStrategy;
 
 import java.util.List;
 import java.util.UUID;
 
 public class ParkingBoy {
     private final List<ParkingLot> parkingLots;
+    private IdealParkingLotStrategy strategy;
 
-    public ParkingBoy(List<ParkingLot> parkingLots) {
+    public ParkingBoy(List<ParkingLot> parkingLots, IdealParkingLotStrategy strategy) {
         this.parkingLots = parkingLots;
+        this.strategy = strategy;
     }
 
     public UUID park(Car car) throws NoAvailableParkingSpace {
-        ParkingLot idealParkingLot = getIdealParkingLot(parkingLots);
+        ParkingLot idealParkingLot = strategy.getIdealParkingLot(parkingLots);
         if (idealParkingLot == null) {
             throw new NoAvailableParkingSpace();
         }
         return idealParkingLot.park(car);
-    }
-
-    private ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
-        ParkingLot idealParkingLot = null;
-        for (ParkingLot parkingLot : parkingLots) {
-            if (parkingLot.getAvailableSpaces() > 0) {
-                idealParkingLot = parkingLot;
-                break;
-            }
-        }
-        return idealParkingLot;
     }
 
     public Car pick(UUID ticket) throws NoSuchCarInParkingLot {
