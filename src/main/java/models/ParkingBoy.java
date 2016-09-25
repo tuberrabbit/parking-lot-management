@@ -14,12 +14,22 @@ public class ParkingBoy {
     }
 
     public UUID park(Car car) throws NoAvailableParkingSpace {
+        ParkingLot idealParkingLot = getIdealParkingLot(parkingLots);
+        if (idealParkingLot == null) {
+            throw new NoAvailableParkingSpace();
+        }
+        return idealParkingLot.park(car);
+    }
+
+    private ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
+        ParkingLot idealParkingLot = null;
         for (ParkingLot parkingLot : parkingLots) {
             if (parkingLot.getAvailableSpaces() > 0) {
-                return parkingLot.park(car);
+                idealParkingLot = parkingLot;
+                break;
             }
         }
-        throw new NoAvailableParkingSpace();
+        return idealParkingLot;
     }
 
     public Car pick(UUID ticket) throws NoSuchCarInParkingLot {

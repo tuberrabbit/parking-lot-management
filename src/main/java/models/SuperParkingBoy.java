@@ -14,16 +14,21 @@ public class SuperParkingBoy extends ParkingBoy {
     }
 
     public UUID park(Car car) throws NoAvailableParkingSpace {
+        ParkingLot idealParkingLot = getIdealParkingLot(parkingLots);
+        if (idealParkingLot == null) {
+            throw new NoAvailableParkingSpace();
+        }
+        return idealParkingLot.park(car);
+    }
+
+    private ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
         ParkingLot parkingLotWithMaxVacancyRate = parkingLots.get(0);
         for (ParkingLot parkingLot : parkingLots) {
             if (parkingLot.getVacancyRate() > parkingLotWithMaxVacancyRate.getVacancyRate()) {
                 parkingLotWithMaxVacancyRate = parkingLot;
             }
         }
-        if (parkingLotWithMaxVacancyRate == null) {
-            throw new NoAvailableParkingSpace();
-        }
-        return parkingLotWithMaxVacancyRate.park(car);
+        return parkingLotWithMaxVacancyRate;
     }
 
 }
