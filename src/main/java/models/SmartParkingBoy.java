@@ -1,15 +1,15 @@
 package models;
 
 import exceptions.NoAvailableParkingSpace;
-import exceptions.NoSuchCarInParkingLot;
 
 import java.util.List;
 import java.util.UUID;
 
-public class SmartParkingBoy {
+public class SmartParkingBoy extends ParkingBoy {
     private final List<ParkingLot> parkingLots;
 
     public SmartParkingBoy(List<ParkingLot> parkingLots) {
+        super(parkingLots);
         this.parkingLots = parkingLots;
     }
 
@@ -26,19 +26,4 @@ public class SmartParkingBoy {
         return parkingLotWithMaxAvailableSpaces.park(car);
     }
 
-    public Car pick(UUID ticket) throws NoSuchCarInParkingLot {
-        Car car = null;
-        for (ParkingLot parkingLot : parkingLots) {
-            try {
-                car = parkingLot.pick(ticket);
-                break;
-            } catch (NoSuchCarInParkingLot noSuchCarInParkingLot) {
-                noSuchCarInParkingLot.printStackTrace();
-            }
-        }
-        if (car == null) {
-            throw new NoSuchCarInParkingLot();
-        }
-        return car;
-    }
 }

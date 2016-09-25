@@ -23,18 +23,13 @@ public class ParkingBoy {
     }
 
     public Car pick(UUID ticket) throws NoSuchCarInParkingLot {
-        Car car = null;
         for (ParkingLot parkingLot : parkingLots) {
             try {
-                car = parkingLot.pick(ticket);
-                break;
+                return parkingLot.pick(ticket);
             } catch (NoSuchCarInParkingLot noSuchCarInParkingLot) {
                 noSuchCarInParkingLot.printStackTrace();
             }
         }
-        if (car == null) {
-            throw new NoSuchCarInParkingLot();
-        }
-        return car;
+        throw new NoSuchCarInParkingLot();
     }
 }
