@@ -4,7 +4,7 @@ import models.ParkingLot;
 
 import java.util.List;
 
-public class AvailableSpacesStrategy implements IdealParkingLotStrategy {
+public class GeneralParkingBoyStrategy implements IdealParkingBoyStrategy {
     public ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
         ParkingLot idealParkingLot = null;
         for (ParkingLot parkingLot : parkingLots) {

@@ -2,16 +2,16 @@ package models;
 
 import exceptions.NoAvailableParkingSpace;
 import exceptions.NoSuchCarInParkingLot;
-import strategies.IdealParkingLotStrategy;
+import strategies.IdealParkingBoyStrategy;
 
 import java.util.List;
 import java.util.UUID;
 
 public class ParkingBoy {
     private final List<ParkingLot> parkingLots;
-    private IdealParkingLotStrategy strategy;
+    private IdealParkingBoyStrategy strategy;
 
-    public ParkingBoy(List<ParkingLot> parkingLots, IdealParkingLotStrategy strategy) {
+    public ParkingBoy(List<ParkingLot> parkingLots, IdealParkingBoyStrategy strategy) {
         this.parkingLots = parkingLots;
         this.strategy = strategy;
     }

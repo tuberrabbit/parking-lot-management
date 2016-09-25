@@ -4,7 +4,7 @@ import models.ParkingLot;
 
 import java.util.List;
 
-public class MaxAvailableSpacesStrategy implements IdealParkingLotStrategy {
+public class SmartParkingBoyStrategy implements IdealParkingBoyStrategy {
     public ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
         ParkingLot parkingLotWithMaxAvailableSpaces = parkingLots.get(0);
         for (ParkingLot parkingLot : parkingLots) {

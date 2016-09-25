@@ -4,7 +4,7 @@ import models.ParkingLot;
 
 import java.util.List;
 
-public class MaxVacancyRateStrategy implements IdealParkingLotStrategy {
+public class SuperParkingBoyStrategy implements IdealParkingBoyStrategy {
     public ParkingLot getIdealParkingLot(List<ParkingLot> parkingLots) {
         ParkingLot parkingLotWithMaxVacancyRate = parkingLots.get(0);
         for (ParkingLot parkingLot : parkingLots) {
