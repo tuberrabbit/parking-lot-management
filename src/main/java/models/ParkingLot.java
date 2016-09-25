@@ -6,7 +6,7 @@ import exceptions.NoSuchCarInParkingLot;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ParkingLot {
+public class ParkingLot implements ParkingBehavior {
     private final HashMap<UUID, Car> cars;
     private final int size;
 

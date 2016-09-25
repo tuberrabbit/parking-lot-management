@@ -7,7 +7,7 @@ import strategies.IdealParkingBoyStrategy;
 import java.util.List;
 import java.util.UUID;
 
-public class ParkingBoy {
+public class ParkingBoy implements ParkingBehavior {
     private final List<ParkingLot> parkingLots;
     private IdealParkingBoyStrategy strategy;
 
