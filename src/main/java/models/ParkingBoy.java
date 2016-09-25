@@ -14,19 +14,12 @@ public class ParkingBoy {
     }
 
     public UUID park(Car car) throws NoAvailableParkingSpace {
-        UUID ticket = null;
         for (ParkingLot parkingLot : parkingLots) {
-            try {
-                ticket = parkingLot.park(car);
-                break;
-            } catch (NoAvailableParkingSpace noAvailableParkingSpace) {
-                noAvailableParkingSpace.printStackTrace();
+            if (parkingLot.getAvailableSpaces() > 0) {
+                return parkingLot.park(car);
             }
         }
-        if (ticket == null) {
-            throw new NoAvailableParkingSpace();
-        }
-        return ticket;
+        throw new NoAvailableParkingSpace();
     }
 
     public Car pick(UUID ticket) throws NoSuchCarInParkingLot {
