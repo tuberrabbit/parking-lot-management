@@ -38,6 +38,16 @@ public class ParkingBoyTest {
         assertThat(parkingBoy.pick(token), sameInstance(car));
     }
 
+    @Test
+    public void should_pick_the_car_when_a_car_parked_into_second_parking_lot() throws Exception {
+        ParkingLot parkingLotWithEmptySpaces = new ParkingLot(1);
+        Car car = new Car();
+        UUID token = parkingLotWithEmptySpaces.park(car);
+        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0), parkingLotWithEmptySpaces);
+
+        assertThat(parkingBoy.pick(token), sameInstance(car));
+    }
+
     @Test(expected = FailToPickException.class)
     public void should_not_be_able_to_pick_the_car_when_never_park_a_car_into_parking_lot_before() throws FailToPickException {
         ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0));
@@ -87,15 +97,5 @@ public class ParkingBoyTest {
         UUID token = parkingBoy.park(car);
 
         assertThat(parkingLotWithEmptySpaces.pick(token), sameInstance(car));
-    }
-
-    @Test
-    public void should_pick_the_car_when_a_car_parked_into_second_parking_lot() throws Exception {
-        ParkingLot parkingLotWithEmptySpaces = new ParkingLot(1);
-        Car car = new Car();
-        UUID token = parkingLotWithEmptySpaces.park(car);
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0), parkingLotWithEmptySpaces);
-
-        assertThat(parkingBoy.pick(token), sameInstance(car));
     }
 }

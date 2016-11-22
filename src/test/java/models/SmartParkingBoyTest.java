@@ -22,7 +22,7 @@ public class SmartParkingBoyTest {
     }
 
     @Test(expected = FailToParkException.class)
-    public void should_not_park_a_car_when_parking_lot_is_full() throws FailToParkException {
+    public void should_not_be_able_to_park_a_car_when_parking_lot_is_full() throws FailToParkException {
         SmartParkingBoy smartBoy = new SmartParkingBoy(new ParkingLot(0));
 
         smartBoy.park(new Car());
