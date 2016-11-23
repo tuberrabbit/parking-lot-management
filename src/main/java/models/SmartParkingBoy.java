@@ -2,32 +2,22 @@ package models;
 
 import exceptions.FailToParkException;
 import exceptions.FailToPickException;
+import strategies.IdealParkingLotStrategy;
+import strategies.MoreEmptySpacesStrategy;
 
 import java.util.UUID;
 
 public class SmartParkingBoy {
     private final ParkingLot[] parkingLots;
+    private final IdealParkingLotStrategy strategy;
 
     public SmartParkingBoy(ParkingLot... parkingLots) {
         this.parkingLots = parkingLots;
+        this.strategy = new MoreEmptySpacesStrategy();
     }
 
     public UUID park(Car car) throws FailToParkException {
-        ParkingLot moreEmptySpaces = getMoreEmptySpacesParkingLot(parkingLots);
-        if (!moreEmptySpaces.hasEmptySpaces()) {
-            throw new FailToParkException();
-        }
-        return moreEmptySpaces.park(car);
-    }
-
-    private ParkingLot getMoreEmptySpacesParkingLot(ParkingLot[] parkingLots) {
-        ParkingLot moreEmptySpaces = parkingLots[0];
-        for (ParkingLot parkingLot : parkingLots) {
-            if (moreEmptySpaces.getEmptySpaces() < parkingLot.getEmptySpaces()) {
-                moreEmptySpaces = parkingLot;
-            }
-        }
-        return moreEmptySpaces;
+        return strategy.getIdealParkingLot(parkingLots).park(car);
     }
 
     public Car pick(UUID token) throws FailToPickException {
