@@ -2,6 +2,7 @@ package models;
 
 import exceptions.FailToParkException;
 import exceptions.FailToPickException;
+import factories.ParkingBoyFactory;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class ParkingBoyTest {
     public void should_be_able_to_park_a_car_when_parking_lot_has_empty_spaces() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(parkingLot);
 
         UUID token = parkingBoy.park(car);
 
@@ -23,7 +24,7 @@ public class ParkingBoyTest {
 
     @Test(expected = FailToParkException.class)
     public void should_not_be_able_to_park_a_car_when_parking_lot_is_full() throws FailToParkException {
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0));
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(new ParkingLot(0));
 
         parkingBoy.park(new Car());
     }
@@ -33,14 +34,14 @@ public class ParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0), parkingLot);
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(new ParkingLot(0), parkingLot);
 
         assertThat(parkingBoy.pick(token), sameInstance(car));
     }
 
     @Test(expected = FailToPickException.class)
     public void should_not_be_able_to_pick_the_car_when_never_park_it_before() throws FailToPickException {
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0));
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(new ParkingLot(0));
         UUID errorToken = UUID.randomUUID();
 
         parkingBoy.pick(errorToken);
@@ -48,7 +49,7 @@ public class ParkingBoyTest {
 
     @Test(expected = FailToPickException.class)
     public void should_not_be_able_to_pick_the_car_duplicated_when_parked_it_in_parking_lot() throws Exception {
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(1));
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(new ParkingLot(1));
         UUID token = parkingBoy.park(new Car());
         parkingBoy.pick(token);
 
@@ -59,7 +60,7 @@ public class ParkingBoyTest {
     public void should_be_able_to_park_a_car_into_first_parking_lot_when_the_first_parking_lot_has_empty_spaces() throws Exception {
         ParkingLot firstParkingLot = new ParkingLot(1);
         ParkingLot secondParkingLot = new ParkingLot(1);
-        ParkingBoy parkingBoy = new ParkingBoy(firstParkingLot, secondParkingLot);
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(firstParkingLot, secondParkingLot);
         Car car = new Car();
 
         UUID token = parkingBoy.park(car);
@@ -71,7 +72,7 @@ public class ParkingBoyTest {
     public void should_not_be_able_to_park_a_car_into_second_parking_lot_when_the_first_parking_lot_has_empty_spaces() throws Exception {
         ParkingLot firstParkingLot = new ParkingLot(1);
         ParkingLot secondParkingLot = new ParkingLot(1);
-        ParkingBoy parkingBoy = new ParkingBoy(firstParkingLot, secondParkingLot);
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(firstParkingLot, secondParkingLot);
 
         UUID token = parkingBoy.park(new Car());
 
@@ -82,7 +83,7 @@ public class ParkingBoyTest {
     public void should_be_able_to_park_a_car_into_second_parking_lot_when_the_first_parking_lot_is_full() throws Exception {
         Car car = new Car();
         ParkingLot parkingLotWithEmptySpaces = new ParkingLot(1);
-        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot(0), parkingLotWithEmptySpaces);
+        ParkingBoy parkingBoy = ParkingBoyFactory.createGeneralParkingBoy(new ParkingLot(0), parkingLotWithEmptySpaces);
 
         UUID token = parkingBoy.park(car);
 

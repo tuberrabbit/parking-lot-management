@@ -3,6 +3,7 @@ package models;
 
 import exceptions.FailToParkException;
 import exceptions.FailToPickException;
+import factories.ParkingBoyFactory;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class SuperParkingBoyTest {
     @Test
     public void should_be_able_to_park_a_car_when_parking_lot_has_empty_spaces() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
-        SuperParkingBoy superBoy = new SuperParkingBoy(parkingLot);
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(parkingLot);
         Car car = new Car();
 
         UUID token = superBoy.park(car);
@@ -27,14 +28,14 @@ public class SuperParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
-        SuperParkingBoy superBoy = new SuperParkingBoy(new ParkingLot(0), parkingLot);
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(new ParkingLot(0), parkingLot);
 
         assertThat(superBoy.pick(token), sameInstance(car));
     }
 
     @Test(expected = FailToParkException.class)
     public void should_not_be_able_to_park_a_car_when_parking_lot_is_full() throws FailToParkException {
-        SuperParkingBoy superBoy = new SuperParkingBoy(new ParkingLot(0));
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(new ParkingLot(0));
         Car car = new Car();
 
         superBoy.park(car);
@@ -42,7 +43,7 @@ public class SuperParkingBoyTest {
 
     @Test(expected = FailToPickException.class)
     public void should_not_be_able_to_pick_the_car_when_never_park_it_before() throws FailToPickException {
-        SuperParkingBoy superBoy = new SuperParkingBoy(new ParkingLot(0));
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(new ParkingLot(0));
         UUID errorToken = UUID.randomUUID();
 
         superBoy.pick(errorToken);
@@ -52,7 +53,7 @@ public class SuperParkingBoyTest {
     public void should_not_be_able_to_pick_the_car_duplicated_when_parked_it_before() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
         UUID token = parkingLot.park(new Car());
-        SuperParkingBoy superBoy = new SuperParkingBoy(parkingLot);
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(parkingLot);
         superBoy.pick(token);
 
         superBoy.pick(token);
@@ -63,7 +64,7 @@ public class SuperParkingBoyTest {
         ParkingLot lowVacancyRate = new ParkingLot(2);
         lowVacancyRate.park(new Car());
         ParkingLot highVacancyRate = new ParkingLot(1);
-        SuperParkingBoy superBoy = new SuperParkingBoy(lowVacancyRate, highVacancyRate);
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(lowVacancyRate, highVacancyRate);
         Car car = new Car();
 
         UUID token = superBoy.park(car);
@@ -76,7 +77,7 @@ public class SuperParkingBoyTest {
         ParkingLot lowVacancyRate = new ParkingLot(2);
         lowVacancyRate.park(new Car());
         ParkingLot highVacancyRate = new ParkingLot(1);
-        SuperParkingBoy superBoy = new SuperParkingBoy(lowVacancyRate, highVacancyRate);
+        ParkingBoy superBoy = ParkingBoyFactory.createSuperParkingBoy(lowVacancyRate, highVacancyRate);
         Car car = new Car();
 
         UUID token = superBoy.park(car);

@@ -1,9 +1,30 @@
 package models;
 
-import strategies.InOrderStrategy;
+import exceptions.FailToParkException;
+import exceptions.FailToPickException;
+import strategies.IdealParkingLotStrategy;
 
-public class ParkingBoy extends Boy {
-    public ParkingBoy(ParkingLot... parkingLots) {
-        super(new InOrderStrategy(), parkingLots);
+import java.util.UUID;
+
+public class ParkingBoy {
+    protected final IdealParkingLotStrategy strategy;
+    protected ParkingLot[] parkingLots;
+
+    public ParkingBoy(IdealParkingLotStrategy strategy, ParkingLot... parkingLots) {
+        this.strategy = strategy;
+        this.parkingLots = parkingLots;
+    }
+
+    public UUID park(Car car) throws FailToParkException {
+        return strategy.getIdealParkingLot(parkingLots).park(car);
+    }
+
+    public Car pick(UUID token) throws FailToPickException {
+        for (ParkingLot parkingLot : parkingLots) {
+            if (parkingLot.contains(token)) {
+                return parkingLot.pick(token);
+            }
+        }
+        throw new FailToPickException();
     }
 }

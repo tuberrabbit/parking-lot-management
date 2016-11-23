@@ -2,6 +2,7 @@ package models;
 
 import exceptions.FailToParkException;
 import exceptions.FailToPickException;
+import factories.ParkingBoyFactory;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -13,7 +14,7 @@ public class SmartParkingBoyTest {
     @Test
     public void should_be_able_to_park_a_car_when_parking_lot_has_empty_spaces() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(parkingLot);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(parkingLot);
         Car car = new Car();
 
         UUID token = smartBoy.park(car);
@@ -23,7 +24,7 @@ public class SmartParkingBoyTest {
 
     @Test(expected = FailToParkException.class)
     public void should_not_be_able_to_park_a_car_when_parking_lot_is_full() throws FailToParkException {
-        SmartParkingBoy smartBoy = new SmartParkingBoy(new ParkingLot(0));
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(new ParkingLot(0));
 
         smartBoy.park(new Car());
     }
@@ -33,7 +34,7 @@ public class SmartParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(parkingLot);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(parkingLot);
 
         assertThat(smartBoy.pick(token), sameInstance(car));
     }
@@ -43,14 +44,14 @@ public class SmartParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(new ParkingLot(0), parkingLot);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(new ParkingLot(0), parkingLot);
 
         assertThat(smartBoy.pick(token), sameInstance(car));
     }
 
     @Test(expected = FailToPickException.class)
     public void should_not_be_able_to_pick_the_car_when_never_park_it_before() throws FailToPickException {
-        SmartParkingBoy smartBoy = new SmartParkingBoy(new ParkingLot(0));
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(new ParkingLot(0));
         UUID errorToken = UUID.randomUUID();
 
         smartBoy.pick(errorToken);
@@ -61,7 +62,7 @@ public class SmartParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(parkingLot);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(parkingLot);
         smartBoy.pick(token);
 
         smartBoy.pick(token);
@@ -71,7 +72,7 @@ public class SmartParkingBoyTest {
     public void should_be_able_to_park_a_car_into_more_empty_spaces_parking_lot() throws Exception {
         ParkingLot lessEmptySpaces = new ParkingLot(1);
         ParkingLot moreEmptySpaces = new ParkingLot(2);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(lessEmptySpaces, moreEmptySpaces);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(lessEmptySpaces, moreEmptySpaces);
         Car car = new Car();
 
         UUID token = smartBoy.park(car);
@@ -83,7 +84,7 @@ public class SmartParkingBoyTest {
     public void should_not_be_able_to_park_a_car_into_less_empty_spaces_parking_lot() throws Exception {
         ParkingLot lessEmptySpaces = new ParkingLot(1);
         ParkingLot moreEmptySpaces = new ParkingLot(2);
-        SmartParkingBoy smartBoy = new SmartParkingBoy(lessEmptySpaces, moreEmptySpaces);
+        ParkingBoy smartBoy = ParkingBoyFactory.createSmartParkingBoy(lessEmptySpaces, moreEmptySpaces);
         Car car = new Car();
 
         UUID token = smartBoy.park(car);
