@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 
 public class ParkingLotTest {
     @Test
-    public void should_be_able_to_pick_the_car_when_parked_a_car_into_parking_lot() throws Exception {
+    public void should_be_able_to_pick_the_car_when_parked_it_in_parking_lot() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car();
         UUID token = parkingLot.park(car);
@@ -27,7 +27,7 @@ public class ParkingLotTest {
     }
 
     @Test(expected = FailToPickException.class)
-    public void should_not_be_able_to_pick_the_car_when_never_park_a_car_into_parking_lot_before() throws FailToPickException {
+    public void should_not_be_able_to_pick_the_car_when_never_park_it_before() throws FailToPickException {
         ParkingLot parkingLot = new ParkingLot(0);
         UUID errorToken = UUID.randomUUID();
 
@@ -35,7 +35,7 @@ public class ParkingLotTest {
     }
 
     @Test(expected = FailToPickException.class)
-    public void should_not_be_able_to_pick_the_car_duplicated_when_parked_a_car_into_parking_lot() throws Exception {
+    public void should_not_be_able_to_pick_the_car_duplicated_when_parked_it_in_parking_lot() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
         UUID token = parkingLot.park(new Car());
         parkingLot.pick(token);
