@@ -1,0 +1,74 @@
+package models;
+
+
+import exceptions.FailToParkException;
+import exceptions.FailToPickException;
+import org.junit.Test;
+
+import java.util.UUID;
+
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.junit.Assert.assertThat;
+
+public class SuperParkingBoyTest {
+    @Test
+    public void should_be_able_to_park_a_car_when_parking_lot_has_empty_spaces() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        SuperParkingBoy superBoy = new SuperParkingBoy(parkingLot);
+        Car car = new Car();
+
+        UUID token = superBoy.park(car);
+
+        assertThat(parkingLot.pick(token), sameInstance(car));
+    }
+
+    @Test
+    public void should_be_able_to_pick_the_car_when_parked_a_car_into_parking_lot() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(0);
+        ParkingLot anotherParkingLot = new ParkingLot(1);
+        Car car = new Car();
+        UUID token = anotherParkingLot.park(car);
+        SuperParkingBoy superBoy = new SuperParkingBoy(parkingLot, anotherParkingLot);
+
+        assertThat(superBoy.pick(token), sameInstance(car));
+    }
+
+    @Test(expected = FailToParkException.class)
+    public void should_not_park_a_car_when_parking_lot_is_full() throws FailToParkException {
+        SuperParkingBoy superBoy = new SuperParkingBoy(new ParkingLot(0));
+        Car car = new Car();
+
+        superBoy.park(car);
+    }
+
+    @Test(expected = FailToPickException.class)
+    public void should_not_pick_the_car_when_never_park_a_car_into_parking_lot_before() throws FailToPickException {
+        SuperParkingBoy superBoy = new SuperParkingBoy(new ParkingLot(0));
+        UUID errorToken = UUID.randomUUID();
+
+        superBoy.pick(errorToken);
+    }
+
+    @Test(expected = FailToPickException.class)
+    public void should_not_pick_the_car_duplicated_when_parked_a_car_into_parking_lot_before() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        UUID token = parkingLot.park(new Car());
+        SuperParkingBoy superBoy = new SuperParkingBoy(parkingLot);
+        superBoy.pick(token);
+
+        superBoy.pick(token);
+    }
+
+    @Test
+    public void should_park_a_car_into_high_vacancy_rate_parking_lot() throws Exception {
+        ParkingLot lowVacancyRate = new ParkingLot(2);
+        lowVacancyRate.park(new Car());
+        ParkingLot highVacancyRate = new ParkingLot(1);
+        SuperParkingBoy superBoy = new SuperParkingBoy(lowVacancyRate, highVacancyRate);
+        Car car = new Car();
+
+        UUID token = superBoy.park(car);
+
+        assertThat(highVacancyRate.pick(token), sameInstance(car));
+    }
+}
