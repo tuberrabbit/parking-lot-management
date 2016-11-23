@@ -45,6 +45,6 @@ public class ParkingLot {
     }
 
     public double getVacancyRate() {
-        return getEmptySpaces() * 1.0 / size;
+        return size != 0 ? getEmptySpaces() * 1.0 / size : 0;
     }
 }

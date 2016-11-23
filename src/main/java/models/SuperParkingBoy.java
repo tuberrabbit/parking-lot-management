@@ -2,32 +2,22 @@ package models;
 
 import exceptions.FailToParkException;
 import exceptions.FailToPickException;
+import strategies.HighVacancyRateStrategy;
+import strategies.IdealParkingLotStrategy;
 
 import java.util.UUID;
 
 public class SuperParkingBoy {
     private final ParkingLot[] parkingLots;
+    private final IdealParkingLotStrategy strategy;
 
     public SuperParkingBoy(ParkingLot... parkingLots) {
         this.parkingLots = parkingLots;
+        this.strategy = new HighVacancyRateStrategy();
     }
 
     public UUID park(Car car) throws FailToParkException {
-        ParkingLot highVacancyRate = getHighVacancyRate(parkingLots);
-        if (highVacancyRate.hasEmptySpaces()) {
-            return highVacancyRate.park(car);
-        }
-        throw new FailToParkException();
-    }
-
-    private ParkingLot getHighVacancyRate(ParkingLot[] parkingLots) {
-        ParkingLot highVacancyRate = parkingLots[0];
-        for (ParkingLot parkingLot : parkingLots) {
-            if (parkingLot.getVacancyRate() > highVacancyRate.getVacancyRate()) {
-                highVacancyRate = parkingLot;
-            }
-        }
-        return highVacancyRate;
+        return strategy.getIdealParkingLot(parkingLots).park(car);
     }
 
     public Car pick(UUID token) throws FailToPickException {
