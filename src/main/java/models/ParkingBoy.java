@@ -1,7 +1,5 @@
 package models;
 
-import exceptions.FailToParkException;
-import exceptions.FailToPickException;
 import strategies.IdealParkingLotStrategy;
 
 import java.util.UUID;
@@ -15,16 +13,16 @@ public class ParkingBoy {
         this.parkingLots = parkingLots;
     }
 
-    public UUID park(Car car) throws FailToParkException {
+    public UUID park(Car car) {
         return strategy.getIdealParkingLot(parkingLots).park(car);
     }
 
-    public Car pick(UUID token) throws FailToPickException {
+    public Car pick(UUID token) {
         for (ParkingLot parkingLot : parkingLots) {
             if (parkingLot.contains(token)) {
                 return parkingLot.pick(token);
             }
         }
-        throw new FailToPickException();
+        return null;
     }
 }

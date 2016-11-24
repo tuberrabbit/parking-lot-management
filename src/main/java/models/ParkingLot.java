@@ -1,8 +1,5 @@
 package models;
 
-import exceptions.FailToParkException;
-import exceptions.FailToPickException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,24 +13,21 @@ public class ParkingLot {
         this.cars = new HashMap<>();
     }
 
-    public UUID park(Car car) throws FailToParkException {
-        if (!hasEmptySpaces()) {
-            throw new FailToParkException();
+    public UUID park(Car car) {
+        if (hasEmptySpaces()) {
+            UUID uuid = UUID.randomUUID();
+            cars.put(uuid, car);
+            return uuid;
         }
-        UUID uuid = UUID.randomUUID();
-        cars.put(uuid, car);
-        return uuid;
+        return null;
     }
 
     public boolean hasEmptySpaces() {
         return getEmptySpaces() > 0;
     }
 
-    public Car pick(UUID token) throws FailToPickException {
-        if (!cars.containsKey(token)) {
-            throw new FailToPickException();
-        }
-        return cars.remove(token);
+    public Car pick(UUID token) {
+        return cars.containsKey(token) ? cars.remove(token) : null;
     }
 
     public boolean contains(UUID token) {
