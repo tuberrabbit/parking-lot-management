@@ -5,8 +5,8 @@ import strategies.IdealParkingLotStrategy;
 import java.util.UUID;
 
 public class ParkingBoy {
-    protected final IdealParkingLotStrategy strategy;
-    protected ParkingLot[] parkingLots;
+    private final IdealParkingLotStrategy strategy;
+    private ParkingLot[] parkingLots;
 
     public ParkingBoy(IdealParkingLotStrategy strategy, ParkingLot... parkingLots) {
         this.strategy = strategy;

@@ -7,11 +7,16 @@ public class InOrderStrategy implements IdealParkingLotStrategy {
     public ParkingLot getIdealParkingLot(ParkingLot... parkingLots) {
         ParkingLot inOrderParkingLot = new ParkingLot(0);
         for (ParkingLot parkingLot : parkingLots) {
-            if (parkingLot.hasEmptySpaces()) {
+            if (hasEmptySpaces(parkingLot)) {
                 inOrderParkingLot = parkingLot;
                 break;
             }
         }
         return inOrderParkingLot;
     }
+
+    private boolean hasEmptySpaces(ParkingLot parkingLot) {
+        return parkingLot.getEmptySpaces() > 0;
+    }
+
 }

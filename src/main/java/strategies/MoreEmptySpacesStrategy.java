@@ -7,7 +7,7 @@ public class MoreEmptySpacesStrategy implements IdealParkingLotStrategy {
     public ParkingLot getIdealParkingLot(ParkingLot... parkingLots) {
         ParkingLot moreEmptySpaces = new ParkingLot(0);
         for (ParkingLot parkingLot : parkingLots) {
-            if (moreEmptySpaces.getEmptySpaces() < parkingLot.getEmptySpaces()) {
+            if (parkingLot.getEmptySpaces() > moreEmptySpaces.getEmptySpaces()) {
                 moreEmptySpaces = parkingLot;
             }
         }

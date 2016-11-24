@@ -14,16 +14,12 @@ public class ParkingLot {
     }
 
     public UUID park(Car car) {
-        if (hasEmptySpaces()) {
+        if (getEmptySpaces() > 0) {
             UUID uuid = UUID.randomUUID();
             cars.put(uuid, car);
             return uuid;
         }
         return null;
-    }
-
-    public boolean hasEmptySpaces() {
-        return getEmptySpaces() > 0;
     }
 
     public Car pick(UUID token) {
@@ -34,11 +30,11 @@ public class ParkingLot {
         return cars.containsKey(token);
     }
 
-    public int getEmptySpaces() {
-        return size - cars.size();
+    public int getSize() {
+        return size;
     }
 
-    public double getVacancyRate() {
-        return size != 0 ? getEmptySpaces() * 1.0 / size : 0;
+    public int getEmptySpaces() {
+        return size - cars.size();
     }
 }
